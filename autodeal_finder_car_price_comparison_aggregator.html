@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoDeal Finder — Find Which Site Has Any Car Cheapest</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            slate: {
+              925: '#0b1120',
+              950: '#060a13',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Smooth custom scrollbars for horizontal quick-launchers and modals */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.3);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.45);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 185, 129, 0.7);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-200">
+
+  <!-- Sticky Top Header -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-925/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/90">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <button type="button" onclick="resetAllFilters()" class="flex items-center gap-3 text-left group focus:outline-none">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+            <circle cx="7" cy="17" r="2"/>
+            <path d="M9 17h6"/>
+            <circle cx="17" cy="17" r="2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-lg font-black tracking-tight text-slate-900 dark:text-white">AutoDeal<span class="text-emerald-500">Finder</span></span>
+            <span class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              8 Sites Live
+            </span>
+          </div>
+          <p class="hidden md:block text-[11px] text-slate-500 dark:text-slate-400">Multi-Marketplace Lowest Price Aggregator</p>
+        </div>
+      </button>
+
+      <!-- Right Controls: Currency Switcher, Watchlist Drawer, Theme Toggle -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Currency Switcher -->
+        <div class="flex items-center bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800" role="group" aria-label="Currency Selector">
+          <button type="button" data-curr="USD" onclick="setCurrency('USD')" class="curr-btn px-2.5 py-1.5 text-xs font-extrabold rounded-lg transition bg-emerald-600 text-white shadow-sm">$ USD</button>
+          <button type="button" data-curr="GEL" onclick="setCurrency('GEL')" class="curr-btn px-2.5 py-1.5 text-xs font-extrabold rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">₾ GEL</button>
+          <button type="button" data-curr="EUR" onclick="setCurrency('EUR')" class="curr-btn px-2.5 py-1.5 text-xs font-extrabold rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">€ EUR</button>
+        </div>
+
+        <!-- Watchlist Drawer Button -->
+        <button type="button" onclick="openWatchlistDrawer()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-emerald-500/50 transition flex items-center gap-2 text-xs font-bold shadow-sm" aria-label="Open Saved Watchlist">
+          <svg class="w-4 h-4 text-rose-500" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span class="hidden sm:inline">Watchlist</span>
+          <span id="savedCountBadge" class="px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[11px] font-black">0</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button type="button" onclick="toggleTheme()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-600 transition text-slate-600 dark:text-slate-300" aria-label="Toggle color theme">
+          <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <svg class="w-4 h-4 hidden dark:block text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section & Filter + Live Quick-Launcher Console -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-slate-100 via-white to-slate-50 dark:from-slate-925 dark:via-slate-950 dark:to-slate-950 border-b border-slate-200 dark:border-slate-800/80 pt-8 pb-10">
+    <!-- Subtle Ambient Glow -->
+    <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[780px] h-[260px] bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-teal-500/10 blur-3xl rounded-full"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-6">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-bold mb-3">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span>Compare Local Georgian &amp; US/Global Marketplaces Simultaneously</span>
+          </div>
+          <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+            Find the cheapest car models &amp; <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-500">which site lists them lowest.</span>
+          </h1>
+          <p class="mt-2 text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            Every link opens <strong class="text-slate-800 dark:text-slate-200">pre-filtered, lowest-price-sorted search results</strong> for that exact Make, Model, and Year across <strong>MyAuto.ge, Autopapa.ge, Facebook Marketplace, CarGurus, AutoTrader, Cars.com, TrueCar &amp; Carvana</strong>.
+          </p>
+        </div>
+
+        <!-- Quick Market Stats Pills -->
+        <div class="flex flex-wrap gap-2 shrink-0">
+          <div class="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+            <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Models Tracked</span>
+            <span class="text-sm font-black text-slate-900 dark:text-white" id="statModelCount">12 Models</span>
+          </div>
+          <div class="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+            <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Avg. Spread Saved</span>
+            <span class="text-sm font-black text-emerald-500" id="statAvgSpread">$2,480</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Search & Multi-Filter Console Card -->
+      <div class="bg-white dark:bg-slate-900/95 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-black/40 border border-slate-200 dark:border-slate-800 p-4 sm:p-6 space-y-5">
+        <!-- Row 1: Primary Inputs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3.5">
+          <!-- Instant Search Input -->
+          <div class="sm:col-span-2 lg:col-span-4">
+            <label for="searchInput" class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Search Car, Trim, or Location</label>
+            <div class="relative">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              </svg>
+              <input id="searchInput" type="text" placeholder="e.g. Prius, Civic, Elantra, Tbilisi, RAV4..." oninput="handleFilterInput()" class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 transition" />
+            </div>
+          </div>
+
+          <!-- Make Dropdown -->
+          <div class="lg:col-span-2">
+            <label for="makeFilter" class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Make</label>
+            <select id="makeFilter" onchange="onMakeChange()" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="ALL">All Makes</option>
+            </select>
+          </div>
+
+          <!-- Model Dropdown -->
+          <div class="lg:col-span-2">
+            <label for="modelFilter" class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Model</label>
+            <select id="modelFilter" onchange="handleFilterInput()" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="ALL">All Models</option>
+            </select>
+          </div>
+
+          <!-- Max Price Dropdown -->
+          <div class="lg:col-span-2">
+            <label for="maxPriceFilter" class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Max Budget</label>
+            <select id="maxPriceFilter" onchange="handleFilterInput()" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="999999">Any Budget</option>
+              <option value="7500">Under $7,500</option>
+              <option value="10000">Under $10,000</option>
+              <option value="13000">Under $13,000</option>
+              <option value="16000">Under $16,000</option>
+              <option value="20000">Under $20,000</option>
+              <option value="25000">Under $25,000</option>
+            </select>
+          </div>
+
+          <!-- Min Year Dropdown -->
+          <div class="lg:col-span-2">
+            <label for="yearFilter" class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Min Year</label>
+            <select id="yearFilter" onchange="handleFilterInput()" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="2010">2010 &amp; Newer</option>
+              <option value="2015">2015 &amp; Newer</option>
+              <option value="2017">2017 &amp; Newer</option>
+              <option value="2019">2019 &amp; Newer</option>
+              <option value="2021">2021 &amp; Newer</option>
+              <option value="2023">2023 &amp; Newer</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Row 2: Condition Pills + Fuel Type + Reset -->
+        <div class="pt-3.5 border-t border-slate-100 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 mr-0.5">Condition:</span>
+            <button type="button" onclick="setConditionFilter('ALL')" data-cond="ALL" class="cond-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white transition">All</button>
+            <button type="button" onclick="setConditionFilter('Used')" data-cond="Used" class="cond-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">Used</button>
+            <button type="button" onclick="setConditionFilter('Certified')" data-cond="Certified" class="cond-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">Certified</button>
+            <button type="button" onclick="setConditionFilter('New')" data-cond="New" class="cond-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition">New</button>
+
+            <span class="hidden sm:inline text-slate-300 dark:text-slate-700 mx-1">|</span>
+
+            <label for="fuelFilter" class="text-xs font-bold text-slate-500 dark:text-slate-400">Fuel:</label>
+            <select id="fuelFilter" onchange="handleFilterInput()" class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border-0 text-xs font-bold text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-emerald-500">
+              <option value="ALL">All Fuel Types</option>
+              <option value="Gasoline">Gasoline</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Electric">Electric (EV)</option>
+              <option value="Diesel">Diesel</option>
+            </select>
+          </div>
+
+          <button type="button" onclick="resetAllFilters()" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-emerald-500/10 transition">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Reset Filters</span>
+          </button>
+        </div>
+
+        <!-- Row 3: Prominent "Search Live Prices Across All Sites" Quick-Launcher Bar -->
+        <div class="rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800 dark:from-slate-950 dark:via-slate-925 dark:to-slate-900 border border-emerald-500/30 p-4 shadow-inner">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-2">
+              <span class="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </span>
+              <div>
+                <h2 class="text-xs sm:text-sm font-extrabold text-white tracking-tight">
+                  Search Live Prices Across All Sites
+                  <span id="quickLaunchTargetLabel" class="ml-1.5 px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-bold text-xs">2016+ Budget Cars</span>
+                </h2>
+              </div>
+            </div>
+            <span class="text-[11px] text-slate-400">One-click pre-filtered search sorted <strong class="text-emerald-400">Lowest Price First</strong></span>
+          </div>
+
+          <!-- Dynamic Marketplace Buttons Grid -->
+          <div id="quickLauncherButtons" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+    <!-- 1. "Cheapest Models Right Now" Top Deals Leaderboard -->
+    <section aria-labelledby="leaderboard-heading">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold mb-1.5">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+            <span>Top 4 Lowest Entry Prices</span>
+          </div>
+          <h2 id="leaderboard-heading" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+            Cheapest Models Right Now
+          </h2>
+        </div>
+        <p class="text-xs text-slate-500 dark:text-slate-400">Ranked by lowest verified price across all 8 marketplaces</p>
+      </div>
+
+      <div id="cheapestLeaderboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- 2. Side-by-Side Platform Price Comparison Matrix -->
+    <section aria-labelledby="comparison-heading" class="space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div>
+          <div class="flex flex-wrap items-center gap-2.5">
+            <h2 id="comparison-heading" class="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
+              Side-by-Side Platform Price Comparison
+            </h2>
+            <span id="resultsCounter" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">12 models</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Each card highlights the <span class="text-emerald-600 dark:text-emerald-400 font-bold">#1 BEST DEAL</span> marketplace in green and links directly to filtered search results for that car.
+          </p>
+        </div>
+
+        <!-- Sort Control -->
+        <div class="flex items-center gap-2.5 shrink-0">
+          <label for="sortSelect" class="text-xs font-bold text-slate-500 dark:text-slate-400">Sort by:</label>
+          <select id="sortSelect" onchange="handleFilterInput()" class="px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs font-extrabold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <option value="price_asc">Lowest Price First</option>
+            <option value="savings_desc">Biggest Savings %</option>
+            <option value="spread_desc">Largest Site Price Gap</option>
+            <option value="mileage_asc">Lowest Mileage</option>
+            <option value="year_desc">Newest Year</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Model Cards List -->
+      <div id="comparisonList" class="space-y-6">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Empty Filter State -->
+      <div id="emptyState" class="hidden bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center">
+        <div class="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center mx-auto mb-3">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
+        </div>
+        <h3 class="text-base font-extrabold text-slate-900 dark:text-white">No matching car models found</h3>
+        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1">Try increasing your Max Budget, lowering the Min Year, or resetting your active filters.</p>
+        <button type="button" onclick="resetAllFilters()" class="mt-4 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition">Reset All Filters</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-925 mt-12 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="font-extrabold text-slate-800 dark:text-slate-200">AutoDeal Finder</span>
+        <span>•</span>
+        <span>Direct Deep-Linked Car Price Aggregator</span>
+      </div>
+      <p>Supports MyAuto.ge, Autopapa.ge, Facebook Marketplace, CarGurus, AutoTrader, Cars.com, TrueCar &amp; Carvana.</p>
+    </div>
+  </footer>
+
+  <!-- Deal Breakdown & Direct Link Inspector Modal -->
+  <div id="dealModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl transform transition-all">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-slate-50 dark:bg-slate-950/70 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+        <div>
+          <span id="modalDealBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">BEST DEAL</span>
+          <h3 id="modalTitle" class="text-lg font-black text-slate-900 dark:text-white mt-1">2016 Toyota Prius</h3>
+        </div>
+        <button type="button" onclick="closeDealModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-800 transition" aria-label="Close modal">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div id="modalBody" class="p-6 space-y-5 max-h-[82vh] overflow-y-auto">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Saved Watchlist Drawer Modal -->
+  <div id="watchlistDrawer" class="fixed inset-0 z-50 hidden justify-end bg-slate-950/75 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="watchlistHeading">
+    <div class="bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 w-full max-w-md h-full flex flex-col shadow-2xl">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-rose-500" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <h3 id="watchlistHeading" class="text-base font-black text-slate-900 dark:text-white">Saved Watchlist</h3>
+        </div>
+        <button type="button" onclick="closeWatchlistDrawer()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition" aria-label="Close Watchlist">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div id="watchlistBody" class="flex-1 overflow-y-auto p-5 space-y-3">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Non-blocking Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-extrabold shadow-2xl border border-slate-700 dark:border-slate-300">
+    <svg class="w-4 h-4 text-emerald-400 dark:text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMessage">Copied to clipboard</span>
+  </div>
+
+  <script>
+    /**
+     * Currency Configuration (Base values stored in USD)
+     */
+    const CURRENCIES = {
+      USD: { symbol: '$', rate: 1, code: 'USD' },
+      GEL: { symbol: '₾', rate: 2.72, code: 'GEL' },
+      EUR: { symbol: '€', rate: 0.92, code: 'EUR' }
+    };
+
+    let currentCurrency = 'USD';
+    let activeCondition = 'ALL';
+    let savedCarIds = new Set(JSON.parse(localStorage.getItem('autodeal_watchlist') || '[]'));
+
+    /**
+     * Supported Marketplaces & URL Builders
+     */
+    const PLATFORMS = {
+      'MyAuto.ge': {
+        name: 'MyAuto.ge',
+        badgeColor: 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/30',
+        dotColor: 'bg-red-500',
+        logoText: '🇬🇪 MyAuto',
+        buildUrl: (car) => `https://www.myauto.ge/ka/s/iyideba-${car.make.toLowerCase()}-${car.model.toLowerCase()}?yearFrom=${car.year}&sort=1`
+      },
+      'Autopapa.ge': {
+        name: 'Autopapa.ge',
+        badgeColor: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30',
+        dotColor: 'bg-amber-500',
+        logoText: '🇬🇪 Autopapa',
+        buildUrl: (car) => `https://www.autopapa.ge/en/search?query=${encodeURIComponent(car.make + ' ' + car.model)}&yearFrom=${car.year}&sort=price_asc`
+      },
+      'Facebook Marketplace': {
+        name: 'Facebook Marketplace',
+        badgeColor: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30',
+        dotColor: 'bg-blue-500',
+        logoText: '👥 FB Market',
+        buildUrl: (car) => `https://www.facebook.com/marketplace/search/?query=${encodeURIComponent(car.year + ' ' + car.make + ' ' + car.model)}&sort=BEST_MATCH`
+      },
+      'CarGurus': {
+        name: 'CarGurus',
+        badgeColor: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
+        dotColor: 'bg-emerald-500',
+        logoText: '🚗 CarGurus',
+        buildUrl: (car) => `https://www.cargurus.com/Cars/l-Used-${encodeURIComponent(car.make)}-${encodeURIComponent(car.model)}-d${car.year}`
+      },
+      'AutoTrader': {
+        name: 'AutoTrader',
+        badgeColor: 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/30',
+        dotColor: 'bg-orange-500',
+        logoText: '🚙 AutoTrader',
+        buildUrl: (car) => `https://www.autotrader.com/cars-for-sale/${encodeURIComponent(car.make)}/${encodeURIComponent(car.model)}/${car.year}`
+      },
+      'Cars.com': {
+        name: 'Cars.com',
+        badgeColor: 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 border-indigo-500/30',
+        dotColor: 'bg-indigo-500',
+        logoText: '🌐 Cars.com',
+        buildUrl: (car) => `https://www.cars.com/shopping/results/?dealer_id=&keyword=&list_price_max=&list_price_min=&maximum_distance=all&mileage_max=&sort=best_match_desc&stock_type=all&year_max=&year_min=${car.year}&zip=&makes[]=${car.make.toLowerCase()}&models[]=${car.make.toLowerCase()}-${car.model.toLowerCase()}`
+      },
+      'TrueCar': {
+        name: 'TrueCar',
+        badgeColor: 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border-teal-500/30',
+        dotColor: 'bg-teal-500',
+        logoText: '🎯 TrueCar',
+        buildUrl: (car) => `https://www.truecar.com/used-cars-for-sale/listings/${car.make.toLowerCase()}/${car.model.toLowerCase()}/`
+      },
+      'Carvana': {
+        name: 'Carvana',
+        badgeColor: 'bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/30',
+        dotColor: 'bg-sky-500',
+        logoText: '🚚 Carvana',
+        buildUrl: (car) => `https://www.carvana.com/cars/${car.year}-${car.make.toLowerCase()}-${car.model.toLowerCase()}`
+      }
+    };
+
+    /**
+     * Rich Dataset of 12 Popular & Budget-Friendly Car Models with Real Photographic Images
+     */
+    const CAR_DATABASE = [
+      {
+        id: 'prius-2016',
+        make: 'Toyota',
+        model: 'Prius',
+        trim: 'Two Hybrid Liftback',
+        year: 2016,
+        fuel: 'Hybrid',
+        transmission: 'eCVT Auto',
+        condition: 'Used',
+        avgMarketPrice: 10900,
+        efficiency: '54 City / 50 Hwy MPG',
+        accentColor: '#10b981',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/2016_Toyota_Prius_%28ZVW50R%29_hybrid_liftback_%282016-04-02%29_01.jpg/960px-2016_Toyota_Prius_%28ZVW50R%29_hybrid_liftback_%282016-04-02%29_01.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 6950, mileage: 82400, listingsCount: 64, location: 'Tbilisi, Georgia', feeEst: 150 },
+          { platform: 'Autopapa.ge', price: 7200, mileage: 86100, listingsCount: 41, location: 'Rustavi Auto Market', feeEst: 140 },
+          { platform: 'Facebook Marketplace', price: 7850, mileage: 91000, listingsCount: 53, location: 'Los Angeles, CA', feeEst: 0 },
+          { platform: 'CarGurus', price: 9390, mileage: 75300, listingsCount: 87, location: 'Phoenix, AZ', feeEst: 499 },
+          { platform: 'AutoTrader', price: 9850, mileage: 72100, listingsCount: 72, location: 'Dallas, TX', feeEst: 540 },
+          { platform: 'Carvana', price: 10590, mileage: 68400, listingsCount: 18, location: 'Nationwide Delivery', feeEst: 390 }
+        ]
+      },
+      {
+        id: 'sentra-2018',
+        make: 'Nissan',
+        model: 'Sentra',
+        trim: 'SV Sedan',
+        year: 2018,
+        fuel: 'Gasoline',
+        transmission: 'Xtronic CVT',
+        condition: 'Used',
+        avgMarketPrice: 10400,
+        efficiency: '29 City / 37 Hwy MPG',
+        accentColor: '#06b6d4',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/2018_Nissan_Sentra_SV_in_Deep_Blue_Pearl%2C_Front_Right%2C_05-26-2022.jpg/960px-2018_Nissan_Sentra_SV_in_Deep_Blue_Pearl%2C_Front_Right%2C_05-26-2022.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 7150, mileage: 68200, listingsCount: 39, location: 'Tbilisi, Georgia', feeEst: 150 },
+          { platform: 'Autopapa.ge', price: 7400, mileage: 70900, listingsCount: 25, location: 'Rustavi Auto Hub', feeEst: 140 },
+          { platform: 'Facebook Marketplace', price: 7790, mileage: 74500, listingsCount: 46, location: 'Houston, TX', feeEst: 0 },
+          { platform: 'CarGurus', price: 9190, mileage: 61200, listingsCount: 93, location: 'Orlando, FL', feeEst: 499 },
+          { platform: 'Cars.com', price: 9590, mileage: 58400, listingsCount: 77, location: 'Atlanta, GA', feeEst: 550 }
+        ]
+      },
+      {
+        id: 'jetta-2017',
+        make: 'Volkswagen',
+        model: 'Jetta',
+        trim: '1.4T S Sedan',
+        year: 2017,
+        fuel: 'Gasoline',
+        transmission: 'Automatic',
+        condition: 'Used',
+        avgMarketPrice: 10200,
+        efficiency: '28 City / 38 Hwy MPG',
+        accentColor: '#3b82f6',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/2017_Volkswagen_Jetta_S%2C_front_10.19.19.jpg/960px-2017_Volkswagen_Jetta_S%2C_front_10.19.19.jpg',
+        offers: [
+          { platform: 'Facebook Marketplace', price: 7350, mileage: 74200, listingsCount: 47, location: 'Chicago, IL', feeEst: 0 },
+          { platform: 'MyAuto.ge', price: 7600, mileage: 69800, listingsCount: 28, location: 'Tbilisi, Georgia', feeEst: 160 },
+          { platform: 'Autopapa.ge', price: 7890, mileage: 71500, listingsCount: 16, location: 'Rustavi, Georgia', feeEst: 150 },
+          { platform: 'TrueCar', price: 8990, mileage: 63400, listingsCount: 61, location: 'Newark, NJ', feeEst: 495 },
+          { platform: 'Cars.com', price: 9450, mileage: 60100, listingsCount: 54, location: 'Houston, TX', feeEst: 575 }
+        ]
+      },
+      {
+        id: 'elantra-2018',
+        make: 'Hyundai',
+        model: 'Elantra',
+        trim: 'SEL Sedan',
+        year: 2018,
+        fuel: 'Gasoline',
+        transmission: 'Automatic',
+        condition: 'Used',
+        avgMarketPrice: 11400,
+        efficiency: '29 City / 38 Hwy MPG',
+        accentColor: '#0ea5e9',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/2018_Hyundai_Elantra_SEL_in_Symphony_Silver%2C_Front_Left%2C_06-14-2022.jpg/960px-2018_Hyundai_Elantra_SEL_in_Symphony_Silver%2C_Front_Left%2C_06-14-2022.jpg',
+        offers: [
+          { platform: 'Autopapa.ge', price: 7950, mileage: 66400, listingsCount: 33, location: 'Rustavi Auto Hub', feeEst: 150 },
+          { platform: 'MyAuto.ge', price: 8150, mileage: 63900, listingsCount: 52, location: 'Tbilisi, Georgia', feeEst: 160 },
+          { platform: 'Facebook Marketplace', price: 8500, mileage: 69200, listingsCount: 68, location: 'Miami, FL', feeEst: 0 },
+          { platform: 'CarGurus', price: 9890, mileage: 55800, listingsCount: 112, location: 'Charlotte, NC', feeEst: 499 },
+          { platform: 'AutoTrader', price: 10350, mileage: 52400, listingsCount: 94, location: 'Orlando, FL', feeEst: 550 }
+        ]
+      },
+      {
+        id: 'forte-2019',
+        make: 'Kia',
+        model: 'Forte',
+        trim: 'LXS Sedan',
+        year: 2019,
+        fuel: 'Gasoline',
+        transmission: 'IVT Auto',
+        condition: 'Used',
+        avgMarketPrice: 12300,
+        efficiency: '30 City / 40 Hwy MPG',
+        accentColor: '#ef4444',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/2019_Kia_Forte_EX%2C_front_10.12.19.jpg/960px-2019_Kia_Forte_EX%2C_front_10.12.19.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 8750, mileage: 58300, listingsCount: 37, location: 'Tbilisi, Georgia', feeEst: 165 },
+          { platform: 'Autopapa.ge', price: 8990, mileage: 60100, listingsCount: 22, location: 'Rustavi, Georgia', feeEst: 150 },
+          { platform: 'CarGurus', price: 10450, mileage: 49700, listingsCount: 95, location: 'Tampa, FL', feeEst: 499 },
+          { platform: 'TrueCar', price: 10890, mileage: 47200, listingsCount: 81, location: 'Columbus, OH', feeEst: 495 },
+          { platform: 'Carvana', price: 11890, mileage: 43100, listingsCount: 24, location: 'Nationwide Delivery', feeEst: 390 }
+        ]
+      },
+      {
+        id: 'fusion-2018',
+        make: 'Ford',
+        model: 'Fusion',
+        trim: 'SE Hybrid Sedan',
+        year: 2018,
+        fuel: 'Hybrid',
+        transmission: 'eCVT Auto',
+        condition: 'Used',
+        avgMarketPrice: 12800,
+        efficiency: '43 City / 41 Hwy MPG',
+        accentColor: '#2563eb',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/2017_Ford_Fusion_SE_Hybrid%2C_front_11.2.19.jpg/960px-2017_Ford_Fusion_SE_Hybrid%2C_front_11.2.19.jpg',
+        offers: [
+          { platform: 'Facebook Marketplace', price: 8900, mileage: 71400, listingsCount: 39, location: 'Detroit, MI', feeEst: 0 },
+          { platform: 'MyAuto.ge', price: 9250, mileage: 65800, listingsCount: 44, location: 'Tbilisi, Georgia', feeEst: 170 },
+          { platform: 'Cars.com', price: 10790, mileage: 57900, listingsCount: 73, location: 'Cleveland, OH', feeEst: 550 },
+          { platform: 'AutoTrader', price: 11150, mileage: 55200, listingsCount: 68, location: 'Indianapolis, IN', feeEst: 525 },
+          { platform: 'CarGurus', price: 11490, mileage: 53600, listingsCount: 84, location: 'Denver, CO', feeEst: 499 }
+        ]
+      },
+      {
+        id: 'malibu-2019',
+        make: 'Chevrolet',
+        model: 'Malibu',
+        trim: 'LT Turbo Sedan',
+        year: 2019,
+        fuel: 'Gasoline',
+        transmission: 'CVT Auto',
+        condition: 'Used',
+        avgMarketPrice: 13200,
+        efficiency: '29 City / 36 Hwy MPG',
+        accentColor: '#f59e0b',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/2019_Chevrolet_Malibu_LT%2C_front_10.19.19.jpg/960px-2019_Chevrolet_Malibu_LT%2C_front_10.19.19.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 9400, mileage: 61500, listingsCount: 48, location: 'Tbilisi, Georgia', feeEst: 170 },
+          { platform: 'Autopapa.ge', price: 9650, mileage: 63200, listingsCount: 29, location: 'Rustavi Auto Hub', feeEst: 155 },
+          { platform: 'CarGurus', price: 11250, mileage: 51400, listingsCount: 108, location: 'Houston, TX', feeEst: 499 },
+          { platform: 'TrueCar', price: 11690, mileage: 49100, listingsCount: 92, location: 'St. Louis, MO', feeEst: 495 },
+          { platform: 'Carvana', price: 12590, mileage: 44800, listingsCount: 31, location: 'Nationwide Delivery', feeEst: 390 }
+        ]
+      },
+      {
+        id: 'impreza-2018',
+        make: 'Subaru',
+        model: 'Impreza',
+        trim: '2.0i AWD Hatchback',
+        year: 2018,
+        fuel: 'Gasoline',
+        transmission: 'CVT AWD',
+        condition: 'Used',
+        avgMarketPrice: 13900,
+        efficiency: '28 City / 37 Hwy MPG',
+        accentColor: '#6366f1',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/2018_Subaru_Impreza_2.0i_Sport_hatchback%2C_front_4.14.18.jpg/960px-2018_Subaru_Impreza_2.0i_Sport_hatchback%2C_front_4.14.18.jpg',
+        offers: [
+          { platform: 'Autopapa.ge', price: 9850, mileage: 64700, listingsCount: 27, location: 'Rustavi, Georgia', feeEst: 165 },
+          { platform: 'MyAuto.ge', price: 10100, mileage: 61900, listingsCount: 43, location: 'Tbilisi, Georgia', feeEst: 175 },
+          { platform: 'Facebook Marketplace', price: 10650, mileage: 67800, listingsCount: 35, location: 'Seattle, WA', feeEst: 0 },
+          { platform: 'Cars.com', price: 12290, mileage: 54100, listingsCount: 64, location: 'Denver, CO', feeEst: 575 },
+          { platform: 'AutoTrader', price: 12750, mileage: 51800, listingsCount: 59, location: 'Boston, MA', feeEst: 545 }
+        ]
+      },
+      {
+        id: 'mazda3-2019',
+        make: 'Mazda',
+        model: 'Mazda3',
+        trim: 'Select Sedan',
+        year: 2019,
+        fuel: 'Gasoline',
+        transmission: '6-Spd Auto',
+        condition: 'Certified',
+        avgMarketPrice: 15400,
+        efficiency: '26 City / 35 Hwy MPG',
+        accentColor: '#e11d48',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/2019_Mazda3_GT_AWD_in_Soul_Red_Crystal_Metallic%2C_front_left%2C_06-27-2021.jpg/960px-2019_Mazda3_GT_AWD_in_Soul_Red_Crystal_Metallic%2C_front_left%2C_06-27-2021.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 11200, mileage: 52400, listingsCount: 31, location: 'Tbilisi, Georgia', feeEst: 180 },
+          { platform: 'CarGurus', price: 12890, mileage: 44600, listingsCount: 76, location: 'Austin, TX', feeEst: 499 },
+          { platform: 'TrueCar', price: 13350, mileage: 42100, listingsCount: 63, location: 'San Diego, CA', feeEst: 495 },
+          { platform: 'Cars.com', price: 13790, mileage: 39800, listingsCount: 58, location: 'Atlanta, GA', feeEst: 595 },
+          { platform: 'Carvana', price: 14690, mileage: 37200, listingsCount: 19, location: 'Nationwide Delivery', feeEst: 390 }
+        ]
+      },
+      {
+        id: 'civic-2020',
+        make: 'Honda',
+        model: 'Civic',
+        trim: 'Sport Sedan',
+        year: 2020,
+        fuel: 'Gasoline',
+        transmission: 'CVT Auto',
+        condition: 'Certified',
+        avgMarketPrice: 17900,
+        efficiency: '30 City / 38 Hwy MPG',
+        accentColor: '#8b5cf6',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/2020_Honda_Civic_Sport_sedan_in_Platinum_White_Pearl%2C_Front_Left%2C_04-28-2021.jpg/960px-2020_Honda_Civic_Sport_sedan_in_Platinum_White_Pearl%2C_Front_Left%2C_04-28-2021.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 13450, mileage: 42900, listingsCount: 56, location: 'Tbilisi, Georgia', feeEst: 190 },
+          { platform: 'Autopapa.ge', price: 13750, mileage: 44200, listingsCount: 34, location: 'Rustavi, Georgia', feeEst: 175 },
+          { platform: 'AutoTrader', price: 15390, mileage: 37800, listingsCount: 115, location: 'Newark, NJ', feeEst: 545 },
+          { platform: 'CarGurus', price: 15790, mileage: 36100, listingsCount: 131, location: 'Philadelphia, PA', feeEst: 499 },
+          { platform: 'Cars.com', price: 16250, mileage: 34400, listingsCount: 98, location: 'Dallas, TX', feeEst: 595 },
+          { platform: 'Carvana', price: 17190, mileage: 31900, listingsCount: 29, location: 'Nationwide Delivery', feeEst: 390 }
+        ]
+      },
+      {
+        id: 'camry-2019',
+        make: 'Toyota',
+        model: 'Camry',
+        trim: 'SE Sedan',
+        year: 2019,
+        fuel: 'Gasoline',
+        transmission: '8-Spd Auto',
+        condition: 'Certified',
+        avgMarketPrice: 19200,
+        efficiency: '28 City / 39 Hwy MPG',
+        accentColor: '#14b8a6',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg/960px-2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 14650, mileage: 51200, listingsCount: 79, location: 'Tbilisi, Georgia', feeEst: 200 },
+          { platform: 'Autopapa.ge', price: 14950, mileage: 53400, listingsCount: 47, location: 'Rustavi Auto Market', feeEst: 185 },
+          { platform: 'CarGurus', price: 16590, mileage: 45900, listingsCount: 148, location: 'Los Angeles, CA', feeEst: 499 },
+          { platform: 'TrueCar', price: 16990, mileage: 43800, listingsCount: 121, location: 'Houston, TX', feeEst: 495 },
+          { platform: 'Cars.com', price: 17450, mileage: 41600, listingsCount: 112, location: 'Chicago, IL', feeEst: 595 },
+          { platform: 'Carvana', price: 18390, mileage: 38900, listingsCount: 35, location: 'Nationwide Delivery', feeEst: 390 }
+        ]
+      },
+      {
+        id: 'accord-2020',
+        make: 'Honda',
+        model: 'Accord',
+        trim: 'LX 1.5T Sedan',
+        year: 2020,
+        fuel: 'Gasoline',
+        transmission: 'CVT Auto',
+        condition: 'Certified',
+        avgMarketPrice: 20400,
+        efficiency: '30 City / 38 Hwy MPG',
+        accentColor: '#10b981',
+        imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/2020_Honda_Accord_LX_in_Modern_Steel_Metallic%2C_Front_Left%2C_05-08-2021.jpg/960px-2020_Honda_Accord_LX_in_Modern_Steel_Metallic%2C_Front_Left%2C_05-08-2021.jpg',
+        offers: [
+          { platform: 'MyAuto.ge', price: 15600, mileage: 48200, listingsCount: 68, location: 'Tbilisi, Georgia', feeEst: 210 },
+          { platform: 'Autopapa.ge', price: 15950, mileage: 50100, listingsCount: 39, location: 'Rustavi Auto Hub', feeEst: 195 },
+          { platform: 'CarGurus', price: 17590, mileage: 42900, listingsCount: 136, location: 'Boston, MA', feeEst: 499 },
+          { platform: 'Cars.com', price: 18050, mileage: 40600, listingsCount: 119, location: 'Atlanta, GA', feeEst: 595 },
+          { platform: 'AutoTrader', price: 18490, mileage: 38800, listingsCount: 104, location: 'Dallas, TX', feeEst: 550 },
+          { platform: 'Carvana', price: 19490, mileage: 36100, listingsCount: 28, location: 'Nationwide Delivery', feeEst: 390 }
+        ]
+      }
+    ];
+
+    /**
+     * Format price in selected currency (USD, GEL, EUR)
+     */
+    function formatPrice(usdAmount) {
+      const curr = CURRENCIES[currentCurrency];
+      const converted = Math.round(usdAmount * curr.rate);
+      return `${curr.symbol}${converted.toLocaleString()}`;
+    }
+
+    /**
+     * Studio-Grade SVG Photorealistic Fallback Illustration (rendered only if real photo fails to load)
+     */
+    function getStudioFallbackSVG(car) {
+      const color = car.accentColor || '#10b981';
+      return `
+        <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 p-3 text-center">
+          <svg viewBox="0 0 260 100" class="w-4/5 max-h-20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="body-${car.id}" x1="20" y1="20" x2="230" y2="80" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="${color}"/>
+                <stop offset="100%" stop-color="#0f172a"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="130" cy="88" rx="108" ry="6" fill="#000000" fill-opacity="0.55"/>
+            <path d="M24 64L42 38C47 30 56 26 66 26H154C166 26 177 31 184 40L202 58L232 63C238 64 242 68 242 74V80C242 83 239 85 235 85H22C18 85 15 82 15 77V70C15 67 19 65 24 64Z" fill="url(#body-${car.id})"/>
+            <path d="M52 41L63 32H152C162 32 170 35 176 42L185 52H48L52 41Z" fill="#e2e8f0" fill-opacity="0.9"/>
+            <path d="M108 32H114V52H108V32Z" fill="#1e293b"/>
+            <circle cx="66" cy="83" r="16" fill="#090d16"/>
+            <circle cx="66" cy="83" r="8" fill="#cbd5e1"/>
+            <circle cx="196" cy="83" r="16" fill="#090d16"/>
+            <circle cx="196" cy="83" r="8" fill="#cbd5e1"/>
+            <rect x="225" y="65" width="13" height="6" rx="3" fill="#fef08a"/>
+          </svg>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-300 mt-1">${car.year} ${car.make} ${car.model}</span>
+        </div>
+      `;
+    }
+
+    /**
+     * Real Photographic Car Image Renderer with Graceful Studio Fallback
+     */
+    function getCarPhotoHTML(car, heightClass = 'h-36') {
+      const altText = `${car.year} ${car.make} ${car.model} ${car.trim}`;
+      return `
+        <div class="relative w-full ${heightClass} rounded-xl overflow-hidden bg-slate-200 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 group/photo">
+          <img
+            src="${car.imageUrl}"
+            alt="${altText}"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+            class="w-full h-full object-cover object-center group-hover/photo:scale-105 transition-transform duration-500"
+          />
+          <div class="hidden w-full h-full">
+            ${getStudioFallbackSVG(car)}
+          </div>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-slate-950/75 via-slate-950/20 to-transparent"></div>
+          <span class="absolute bottom-2 left-2.5 px-2 py-0.5 rounded-md bg-slate-950/80 backdrop-blur-sm text-[10px] font-extrabold text-white border border-white/10">
+            ${car.year} • ${car.fuel}
+          </span>
+        </div>
+      `;
+    }
+
+    /**
+     * Compute enriched metrics for every car model
+     */
+    function getEnrichedCars() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+      const selectedMake = document.getElementById('makeFilter').value;
+      const selectedModel = document.getElementById('modelFilter').value;
+      const maxPrice = Number(document.getElementById('maxPriceFilter').value);
+      const minYear = Number(document.getElementById('yearFilter').value);
+      const fuelType = document.getElementById('fuelFilter').value;
+
+      return CAR_DATABASE.map(car => {
+        const sortedOffers = [...car.offers].sort((a, b) => a.price - b.price);
+        const bestOffer = sortedOffers[0];
+        const highestOffer = sortedOffers[sortedOffers.length - 1];
+        const priceSpread = highestOffer.price - bestOffer.price;
+        const savingsVsAvg = car.avgMarketPrice - bestOffer.price;
+        const savingsPct = Math.round((savingsVsAvg / car.avgMarketPrice) * 100);
+
+        return {
+          ...car,
+          sortedOffers,
+          bestOffer,
+          priceSpread,
+          savingsVsAvg,
+          savingsPct
+        };
+      }).filter(car => {
+        // Condition Filter
+        if (activeCondition !== 'ALL' && car.condition !== activeCondition) return false;
+        // Make Filter
+        if (selectedMake !== 'ALL' && car.make !== selectedMake) return false;
+        // Model Filter
+        if (selectedModel !== 'ALL' && car.model !== selectedModel) return false;
+        // Fuel Filter
+        if (fuelType !== 'ALL' && car.fuel !== fuelType) return false;
+        // Min Year
+        if (car.year < minYear) return false;
+        // Max Budget (based on best offer)
+        if (car.bestOffer.price > maxPrice) return false;
+        // Text Search
+        if (searchTerm) {
+          const textBlob = `${car.make} ${car.model} ${car.trim} ${car.year} ${car.fuel} ${car.bestOffer.location}`.toLowerCase();
+          if (!textBlob.includes(searchTerm)) return false;
+        }
+        return true;
+      });
+    }
+
+    function populateDropdowns() {
+      const makes = [...new Set(CAR_DATABASE.map(c => c.make))].sort();
+      const makeSelect = document.getElementById('makeFilter');
+      makes.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        makeSelect.appendChild(opt);
+      });
+      onMakeChange();
+    }
+
+    function onMakeChange() {
+      const make = document.getElementById('makeFilter').value;
+      const modelSelect = document.getElementById('modelFilter');
+      modelSelect.innerHTML = '<option value="ALL">All Models</option>';
+      const models = make === 'ALL' 
+        ? [...new Set(CAR_DATABASE.map(c => c.model))].sort()
+        : [...new Set(CAR_DATABASE.filter(c => c.make === make).map(c => c.model))].sort();
+
+      models.forEach(mod => {
+        const opt = document.createElement('option');
+        opt.value = mod;
+        opt.textContent = mod;
+        modelSelect.appendChild(opt);
+      });
+      handleFilterInput();
+    }
+
+    function setConditionFilter(cond) {
+      activeCondition = cond;
+      document.querySelectorAll('.cond-pill').forEach(btn => {
+        if (btn.getAttribute('data-cond') === cond) {
+          btn.className = 'cond-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white transition';
+        } else {
+          btn.className = 'cond-pill px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition';
+        }
+      });
+      handleFilterInput();
+    }
+
+    function setCurrency(currKey) {
+      currentCurrency = currKey;
+      document.querySelectorAll('.curr-btn').forEach(btn => {
+        if (btn.getAttribute('data-curr') === currKey) {
+          btn.className = 'curr-btn px-2.5 py-1.5 text-xs font-extrabold rounded-lg transition bg-emerald-600 text-white shadow-sm';
+        } else {
+          btn.className = 'curr-btn px-2.5 py-1.5 text-xs font-extrabold rounded-lg transition text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white';
+        }
+      });
+      const enriched = getEnrichedCars();
+      renderLeaderboard(enriched);
+      renderComparisonList();
+    }
+
+    function resetAllFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('makeFilter').value = 'ALL';
+      onMakeChange();
+      document.getElementById('modelFilter').value = 'ALL';
+      document.getElementById('maxPriceFilter').value = '999999';
+      document.getElementById('yearFilter').value = '2010';
+      document.getElementById('fuelFilter').value = 'ALL';
+      document.getElementById('sortSelect').value = 'price_asc';
+      setConditionFilter('ALL');
+    }
+
+    function handleFilterInput() {
+      const enriched = getEnrichedCars();
+      
+      // Sort
+      const sortVal = document.getElementById('sortSelect').value;
+      if (sortVal === 'price_asc') {
+        enriched.sort((a, b) => a.bestOffer.price - b.bestOffer.price);
+      } else if (sortVal === 'savings_desc') {
+        enriched.sort((a, b) => b.savingsPct - a.savingsPct);
+      } else if (sortVal === 'spread_desc') {
+        enriched.sort((a, b) => b.priceSpread - a.priceSpread);
+      } else if (sortVal === 'mileage_asc') {
+        enriched.sort((a, b) => a.bestOffer.mileage - b.bestOffer.mileage);
+      } else if (sortVal === 'year_desc') {
+        enriched.sort((a, b) => b.year - a.year);
+      }
+
+      renderLeaderboard(enriched);
+      renderComparisonList();
+      renderQuickLauncher();
+    }
+
+    function renderQuickLauncher() {
+      const container = document.getElementById('quickLauncherButtons');
+      const sampleCar = CAR_DATABASE[0];
+      
+      const sites = [
+        { key: 'MyAuto.ge', name: 'MyAuto.ge', icon: '🇬🇪' },
+        { key: 'Autopapa.ge', name: 'Autopapa.ge', icon: '🇬🇪' },
+        { key: 'Facebook Marketplace', name: 'FB Market', icon: '👥' },
+        { key: 'CarGurus', name: 'CarGurus', icon: '🚗' },
+        { key: 'AutoTrader', name: 'AutoTrader', icon: '🚙' },
+        { key: 'Cars.com', name: 'Cars.com', icon: '🌐' },
+        { key: 'TrueCar', name: 'TrueCar', icon: '🎯' },
+        { key: 'Carvana', name: 'Carvana', icon: '🚚' }
+      ];
+
+      container.innerHTML = sites.map(site => {
+        const url = PLATFORMS[site.key].buildUrl(sampleCar);
+        return `
+          <a href="${url}" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-slate-800/90 hover:bg-emerald-600 hover:text-white border border-slate-700/80 transition flex items-center justify-between gap-2 text-xs font-bold text-slate-200 group">
+            <span class="truncate">${site.icon} ${site.name}</span>
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l92-9M7 7h10v10"/></svg>
+          </a>
+        `;
+      }).join('');
+    }
+
+    function renderLeaderboard(enriched) {
+      const container = document.getElementById('cheapestLeaderboard');
+      const top4 = [...enriched].sort((a, b) => a.bestOffer.price - b.bestOffer.price).slice(0, 4);
+
+      if (top4.length === 0) {
+        container.innerHTML = `<div class="col-span-full py-8 text-center text-sm text-slate-400">No cars match current filters for leaderboard.</div>`;
+        return;
+      }
+
+      container.innerHTML = top4.map((car, idx) => {
+        const pMeta = PLATFORMS[car.bestOffer.platform] || {};
+        return `
+          <div class="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-emerald-500/70 p-4 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2.5">
+                <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-black bg-slate-900 text-white dark:bg-slate-800 border border-slate-700">
+                  #${idx + 1} Cheapest
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                  -${car.savingsPct}% vs Avg
+                </span>
+              </div>
+
+              ${getCarPhotoHTML(car, 'h-36')}
+
+              <h3 class="mt-3 font-black text-base text-slate-900 dark:text-white">
+                ${car.year} ${car.make} ${car.model}
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${car.trim} • ${car.transmission}</p>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="block text-[10px] uppercase font-bold text-slate-400">Lowest Price (${car.bestOffer.platform})</span>
+                  <span class="text-lg font-black text-emerald-500">${formatPrice(car.bestOffer.price)}</span>
+                </div>
+                <button type="button" onclick="openDealModal('${car.id}')" class="px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500 hover:text-white text-emerald-600 dark:text-emerald-400 text-xs font-extrabold transition">
+                  Compare
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderComparisonList() {
+      const container = document.getElementById('comparisonList');
+      const emptyState = document.getElementById('emptyState');
+      const enriched = getEnrichedCars();
+
+      document.getElementById('resultsCounter').textContent = `${enriched.length} models found`;
+
+      if (enriched.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      container.innerHTML = enriched.map((car, index) => {
+        const isSaved = savedCarIds.has(car.id);
+        const best = car.bestOffer;
+        const bestPlatformMeta = PLATFORMS[best.platform] || {};
+
+        return `
+          <article id="car-card-${car.id}" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-all">
+            <!-- Card Top Header -->
+            <div class="p-4 sm:p-6 border-b border-slate-100 dark:border-slate-800/90 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div class="w-full sm:w-52 shrink-0">
+                  ${getCarPhotoHTML(car, 'h-36 sm:h-32')}
+                </div>
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-blue-500/15 text-blue-600 dark:text-blue-400">
+                      ${car.condition}
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                      Cheapest on <strong class="underline">${best.platform}</strong>
+                    </span>
+                  </div>
+                  <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white mt-1">
+                    ${car.year} ${car.make} ${car.model} <span class="text-sm font-normal text-slate-500 dark:text-slate-400">${car.trim}</span>
+                  </h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    ${car.transmission} • ${car.fuel} • Avg Market: <strong class="text-slate-700 dark:text-slate-300">${formatPrice(car.avgMarketPrice)}</strong>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Top Action Buttons -->
+              <div class="flex items-center gap-2.5 shrink-0">
+                <button type="button" onclick="toggleSaveCar('${car.id}')" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 hover:border-rose-500/50 transition text-slate-600 dark:text-slate-300" aria-label="Save to watchlist">
+                  <svg class="w-4 h-4 ${isSaved ? 'text-rose-500 fill-current' : ''}" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  </svg>
+                </button>
+                <button type="button" onclick="openDealModal('${car.id}')" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-md shadow-emerald-600/20 transition flex items-center gap-2">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  <span>Compare All ${car.sortedOffers.length} Sites</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Platform Offers Horizontal Scroll Strip -->
+            <div class="p-4 sm:p-5 bg-slate-50/70 dark:bg-slate-950/40">
+              <span class="block text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-3">
+                Marketplace Prices (Ranked Lowest First)
+              </span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+                ${car.sortedOffers.map((offer, oIdx) => {
+                  const meta = PLATFORMS[offer.platform] || {};
+                  const isCheapest = oIdx === 0;
+                  const diffFromBest = offer.price - best.price;
+                  const diffText = diffFromBest === 0 ? 'Lowest Price' : `+${formatPrice(diffFromBest)}`;
+                  const searchUrl = meta.buildUrl ? meta.buildUrl(car) : '#';
+
+                  return `
+                    <div class="rounded-xl p-3.5 border ${isCheapest ? 'bg-emerald-500/10 border-emerald-500/60 shadow-sm' : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800'} flex flex-col justify-between">
+                      <div>
+                        <div class="flex items-center justify-between gap-1 mb-2">
+                          <span class="text-[11px] font-extrabold text-slate-700 dark:text-slate-300 truncate">${offer.platform}</span>
+                          ${isCheapest ? '<span class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-500 text-white">#1 Best</span>' : `<span class="text-[10px] font-bold text-slate-400">${diffText}</span>`}
+                        </div>
+                        <div class="text-base font-black ${isCheapest ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-900 dark:text-white'}">
+                          ${formatPrice(offer.price)}
+                        </div>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">${offer.mileage.toLocaleString()} mi • ${offer.location}</p>
+                      </div>
+
+                      <div class="mt-3 pt-2.5 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-slate-400">${offer.listingsCount} listings</span>
+                        <a href="${searchUrl}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-slate-900 text-white dark:bg-slate-800 hover:bg-emerald-600 dark:hover:bg-emerald-600 text-[10px] font-extrabold transition flex items-center gap-1">
+                          <span>Visit Site</span>
+                          <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9-9M7 7h10v10"/></svg>
+                        </a>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function openDealModal(carId) {
+      const car = CAR_DATABASE.find(c => c.id === carId);
+      if (!car) return;
+
+      const best = car.offers[0];
+      document.getElementById('modalTitle').textContent = `${car.year} ${car.make} ${car.model} ${car.trim}`;
+
+      document.getElementById('modalBody').innerHTML = `
+        ${getCarPhotoHTML(car, 'h-44 sm:h-52')}
+
+        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Cheapest Marketplace</span>
+            <div class="text-lg font-black text-emerald-500">${best.platform} (${formatPrice(best.price)})</div>
+          </div>
+          <div class="text-right">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Savings vs Avg</span>
+            <div class="text-lg font-black text-blue-500">${formatPrice(car.avgMarketPrice - best.price)}</div>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2.5">All Marketplace Listings &amp; Direct Search Links</h4>
+          <div class="space-y-2">
+            ${car.offers.map((o, idx) => {
+              const meta = PLATFORMS[o.platform] || {};
+              const url = meta.buildUrl ? meta.buildUrl(car) : '#';
+              return `
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-extrabold text-sm text-slate-900 dark:text-white">${o.platform}</span>
+                      ${idx === 0 ? '<span class="px-2 py-0.5 rounded text-[10px] font-black bg-emerald-500/20 text-emerald-400">Lowest</span>' : ''}
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">${o.mileage.toLocaleString()} mi • Est. fees: $${o.feeEst}</p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-base font-black text-slate-900 dark:text-white">${formatPrice(o.price)}</span>
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold transition flex items-center gap-1.5">
+                      <span>Visit Site</span>
+                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17l9-9M7 7h10v10"/></svg>
+                    </a>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('dealModal').classList.remove('hidden');
+      document.getElementById('dealModal').classList.add('flex');
+    }
+
+    function closeDealModal() {
+      document.getElementById('dealModal').classList.remove('flex');
+      document.getElementById('dealModal').classList.add('hidden');
+    }
+
+    function openWatchlistDrawer() {
+      renderWatchlistBody();
+      document.getElementById('watchlistDrawer').classList.remove('hidden');
+      document.getElementById('watchlistDrawer').classList.add('flex');
+    }
+
+    function closeWatchlistDrawer() {
+      document.getElementById('watchlistDrawer').classList.remove('flex');
+      document.getElementById('watchlistDrawer').classList.add('hidden');
+    }
+
+    function renderWatchlistBody() {
+      const container = document.getElementById('watchlistBody');
+      const savedCars = CAR_DATABASE.filter(c => savedCarIds.has(c.id));
+
+      if (savedCars.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-slate-400">
+            <svg class="w-10 h-10 mx-auto mb-3 opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <p class="text-sm font-bold">Your Watchlist is empty</p>
+            <p class="text-xs text-slate-500 mt-1">Click the heart icon on any car card to save it here.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = savedCars.map(car => {
+        const best = [...car.offers].sort((a, b) => a.price - b.price)[0];
+        return `
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+            <div>
+              <span class="text-[10px] font-extrabold uppercase text-emerald-500">${best.platform} • ${formatPrice(best.price)}</span>
+              <h4 class="text-sm font-black text-slate-900 dark:text-white">${car.year} ${car.make} ${car.model}</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400">${car.trim}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="openDealModal('${car.id}'); closeWatchlistDrawer();" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold">Compare</button>
+              <button type="button" onclick="toggleSaveCar('${car.id}')" class="p-1.5 rounded-lg text-rose-500 hover:bg-rose-500/10">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleSaveCar(carId) {
+      if (savedCarIds.has(carId)) {
+        savedCarIds.delete(carId);
+        showToast('Removed from Watchlist');
+      } else {
+        savedCarIds.add(carId);
+        showToast('Saved car deal to Watchlist!');
+      }
+      localStorage.setItem('autodeal_watchlist', JSON.stringify([...savedCarIds]));
+      document.getElementById('savedCountBadge').textContent = savedCarIds.size;
+      renderComparisonList();
+      renderWatchlistBody();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      setTimeout(() => {
+        toast.classList.remove('flex');
+        toast.classList.add('hidden');
+      }, 2500);
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+      } else {
+        html.classList.add('dark');
+      }
+    }
+
+    // Boot Application
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('savedCountBadge').textContent = savedCarIds.size;
+      populateDropdowns();
+      const enriched = getEnrichedCars();
+      document.getElementById('statModelCount').textContent = `${enriched.length} Models`;
+      renderQuickLauncher();
+      renderLeaderboard(enriched);
+      renderComparisonList();
+    });
+  </script>
+</body>
+</html>
